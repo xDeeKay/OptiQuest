@@ -1,0 +1,22 @@
+{
+    "Group": "Opticraft",
+    "Name": "OptiQuest",
+    "Version": "0.1.0",
+    "Description": "Custom plugin for the Opticraft Hytale server.",
+    "Authors": [
+        {
+            "Name": "xDeeKay"
+        }
+    ],
+    "Website": "opticraft.net",
+    "ServerVersion": "*",
+    "Dependencies": {
+        
+    },
+    "OptionalDependencies": {
+        
+    },
+    "DisabledByDefault": false,
+    "Main": "net.opticraft.optiquest.OptiQuest",
+    "IncludesAssetPack": true
+}
