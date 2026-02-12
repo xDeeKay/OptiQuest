@@ -11,8 +11,8 @@ public class MOTDCommand extends CommandBase {
     private final OptiQuest plugin;
 
     public MOTDCommand(OptiQuest plugin) {
-        this.plugin = plugin;
         super("motd", "Display the Message of the Day.", false);
+        this.plugin = plugin;
     }
 
     @Override

@@ -12,8 +12,8 @@ public class RulesCommand extends CommandBase {
     private final OptiQuest plugin;
 
     public RulesCommand(OptiQuest plugin) {
-        this.plugin = plugin;
         super("rules", "Display the server rules.", false);
+        this.plugin = plugin;
     }
 
     @Override

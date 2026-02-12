@@ -13,17 +13,12 @@ import java.awt.*;
 public class BroadcastCommand extends CommandBase {
 
     private final OptiQuest plugin;
-
-    @Nonnull private final RequiredArg<String> messageArg;
+    private final RequiredArg<String> messageArg;
 
     public BroadcastCommand(OptiQuest plugin) {
-        this.plugin = plugin;
-
         super("broadcast", "Broadcast a message to all online players", false);
-
-        this.messageArg = this.withRequiredArg("message", "net.opticraft.optiquest.commands.broadcast.arg.message",
-                ArgTypes.STRING);
-
+        this.plugin = plugin;
+        this.messageArg = this.withRequiredArg("message", "net.opticraft.optiquest.commands.broadcast.arg.message", ArgTypes.STRING);
         this.setAllowsExtraArguments(true);
     }
 

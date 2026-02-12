@@ -24,18 +24,30 @@ public class ListCommand extends CommandBase {
         Collection<OptiPlayer> onlinePlayers = plugin.getPlayerManager().getAll();
         int count = onlinePlayers.size();
 
+        String headerTemplate = plugin.getConfig().getPlayerListMessages().get(0);
+        String playerTemplate = plugin.getConfig().getPlayerListMessages().get(1);
+
         List<String> formattedNames = onlinePlayers.stream()
-                .map(player -> player.isAfk() ? "&7[AFK] " + player.getUsername() : "&a" + player.getUsername())
+                .map(optiPlayer -> {
+                    String color = plugin.getConfig().getGroupColor(optiPlayer.getPrimaryGroup());
+                    String afkPrefix = optiPlayer.isAfk() ? plugin.getConfig().getAfkPrefix() : "";
+
+                    return playerTemplate
+                            .replace("%afk%", afkPrefix)
+                            .replace("%groupcolor%", color)
+                            .replace("%displayname%", optiPlayer.getDisplayName())
+                            .replace("%username%", optiPlayer.getUsername());
+                })
                 .sorted(String.CASE_INSENSITIVE_ORDER)
                 .toList();
 
-        String playerList = String.join("&7, ", formattedNames);
-
-        context.sender().sendMessage(plugin.getColorUtils().colorize("&6Online Players (&e" + count + "&6):"));
+        String header = headerTemplate.replace("%count%", String.valueOf(count));
+        context.sender().sendMessage(plugin.getColorUtils().colorize(header));
 
         if (formattedNames.isEmpty()) {
             context.sender().sendMessage(plugin.getColorUtils().colorize("&7There are no players online."));
         } else {
+            String playerList = String.join("&f, ", formattedNames);
             context.sender().sendMessage(plugin.getColorUtils().colorize(playerList));
         }
     }

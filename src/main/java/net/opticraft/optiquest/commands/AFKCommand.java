@@ -15,8 +15,8 @@ public class AFKCommand extends CommandBase {
     private final OptiQuest plugin;
 
     public AFKCommand(OptiQuest plugin) {
-        this.plugin = plugin;
         super("afk", "Toggle your AFK status.", false);
+        this.plugin = plugin;
     }
 
     @Override
@@ -25,24 +25,24 @@ public class AFKCommand extends CommandBase {
         String senderName = sender.getDisplayName();
 
         OptiPlayer optiPlayer = plugin.getPlayerManager().getByUsername(senderName);
-
-        if (optiPlayer == null) {
-            sender.sendMessage(Message.raw("Error: Your player data could not be found.").color(Color.RED));
-            return;
-        }
+        if (optiPlayer == null) return;
 
         boolean nowAfk = !optiPlayer.isAfk();
-
         optiPlayer.setAfk(nowAfk);
 
         String messageTemplate = nowAfk
                 ? plugin.getConfig().getAfkMessageActive()
                 : plugin.getConfig().getAfkMessageInactive();
 
-        String afkMessage = messageTemplate.replace("%username%", senderName);
+        String afkMessage = messageTemplate
+                .replace("%username%", senderName)
+                .replace("%displayname%", optiPlayer.getDisplayName());
 
+        Message finalMessage = plugin.getColorUtils().colorize(afkMessage);
         for (OptiPlayer onlinePlayer : plugin.getPlayerManager().getAll()) {
-            onlinePlayer.getPlayerRef().sendMessage(plugin.getColorUtils().colorize(afkMessage));
+            onlinePlayer.getPlayerRef().sendMessage(finalMessage);
         }
+
+        plugin.getDataManager().savePlayer(optiPlayer);
     }
 }

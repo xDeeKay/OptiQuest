@@ -59,7 +59,7 @@ public class ColorUtils {
             case 'd' -> Color.PINK;
             case 'e' -> Color.YELLOW;
             case 'f' -> Color.WHITE;
-            case 'x' -> Color.LIGHT_GRAY;
+            case 'g' -> Color.LIGHT_GRAY;
             default -> Color.WHITE;
         };
     }

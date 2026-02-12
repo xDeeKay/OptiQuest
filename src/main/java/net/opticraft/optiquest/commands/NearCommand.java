@@ -6,7 +6,6 @@ import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import net.opticraft.optiquest.OptiQuest;
 import net.opticraft.optiquest.player.OptiPlayer;
-import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -33,22 +32,29 @@ public class NearCommand extends CommandBase {
         Vector3d sPos = senderRef.getTransform().getPosition();
 
         int radius = plugin.getConfig().getNearRadius();
-        List<String> nearbyNames = getStrings(senderName, sPos, radius);
+
+        List<String> formats = plugin.getConfig().getNearMessages();
+        String headerTemplate = formats.get(0);
+        String playerTemplate = formats.get(1);
+
+        List<String> nearbyNames = getNearbyPlayerStrings(optiSender, sPos, radius, playerTemplate);
 
         if (nearbyNames.isEmpty()) {
             senderRef.sendMessage(plugin.getColorUtils().colorize("&eNo players within " + radius + "m."));
         } else {
-            String list = String.join("&7, ", nearbyNames);
-            senderRef.sendMessage(plugin.getColorUtils().colorize("&6Nearby: " + list));
+            String header = headerTemplate.replace("%radius%", String.valueOf(radius));
+            String list = String.join("&f, ", nearbyNames);
+
+            senderRef.sendMessage(plugin.getColorUtils().colorize(header));
+            senderRef.sendMessage(plugin.getColorUtils().colorize(list));
         }
     }
 
-    @NonNullDecl
-    private List<String> getStrings(String senderName, Vector3d sPos, int radius) {
+    private List<String> getNearbyPlayerStrings(OptiPlayer sender, Vector3d sPos, int radius, String playerTemplate) {
         List<String> nearbyNames = new ArrayList<>();
 
         for (OptiPlayer target : plugin.getPlayerManager().getAll()) {
-            if (target.getUsername().equalsIgnoreCase(senderName)) continue;
+            if (target.getUuid().equals(sender.getUuid())) continue;
 
             PlayerRef targetRef = target.getPlayerRef();
             Vector3d tPos = targetRef.getTransform().getPosition();
@@ -60,7 +66,15 @@ public class NearCommand extends CommandBase {
             );
 
             if (distance <= radius) {
-                nearbyNames.add("&a" + target.getUsername() + " &7(" + (int) distance + "m)");
+                String color = plugin.getConfig().getGroupColor(target.getPrimaryGroup());
+
+                String entry = playerTemplate
+                        .replace("%groupcolor%", color)
+                        .replace("%displayname%", target.getDisplayName())
+                        .replace("%username%", target.getUsername())
+                        .replace("%distance%", String.valueOf((int) distance));
+
+                nearbyNames.add(entry);
             }
         }
         return nearbyNames;
