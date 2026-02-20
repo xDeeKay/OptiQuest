@@ -38,7 +38,7 @@ public class OptiPlayerListener {
 
             CompletableFuture.runAsync(() -> {
                 try {
-                    Thread.sleep(1000); // 1 second pause
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     plugin.getLogger().at(Level.SEVERE).log("[OptiQuest] Concurrent async delay failed!", e);
                     Thread.currentThread().interrupt();

@@ -1,7 +1,7 @@
 {
     "Group": "Opticraft",
     "Name": "OptiQuest",
-    "Version": "0.2.0",
+    "Version": "0.2.1",
     "Description": "Custom plugin for the Opticraft Hytale server.",
     "Authors": [
         {
@@ -9,7 +9,7 @@
         }
     ],
     "Website": "opticraft.net",
-    "ServerVersion": "*",
+    "ServerVersion": "2026.02.19-1a311a592",
     "Dependencies": {
         
     },

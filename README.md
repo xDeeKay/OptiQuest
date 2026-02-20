@@ -1,4 +1,4 @@
-# OptiQuest v0.2.0
+# OptiQuest v0.2.1
 
 A custom plugin for the Opticraft Hytale server.
 
